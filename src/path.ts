@@ -4,8 +4,8 @@ const paths= {
         return '/home'
     },
 
-    topicShow(topicSlug: string){
-        return `/topic/${topicSlug}`
+    topicShow(slug: string){
+        return `/topic/${slug}`
     },
     postCreate(topicSlug: string){
         return `/topic/${topicSlug}/posts/new`

@@ -4,39 +4,12 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarItem,
-  Input,
-  Button,
-  Avatar,
 } from '@nextui-org/react';
-import { auth } from '@/auth';
-import * as actions from '@/actions';
+import HeaderAuth from './header-auth';
+import SearchInput from './search-input';
+import { Suspense } from 'react';
 export default async function Header() {
-  const session = await auth();
 
-  let authContent: React.ReactNode;
-  if (session?.user) {
-    authContent = <Avatar src={session.user.image || ''} />;
-  } else {
-    authContent = (
-      <>
-        <NavbarItem>
-          <form action={actions.signInWithGitHub}>
-            <Button type="submit" color="secondary" variant="bordered">
-              Sign In
-            </Button>
-          </form>
-         
-        </NavbarItem>
-
-        <NavbarItem>
-          
-          <Button type="submit" color="primary" variant="flat">
-            Sign Up
-          </Button>
-        </NavbarItem>
-      </>
-    );
-  }
 
   return (
     <Navbar className="shadow mb-6">
@@ -47,11 +20,13 @@ export default async function Header() {
       </NavbarBrand>
       <NavbarContent justify="center">
         <NavbarItem>
-          <Input />
+          <Suspense fallback={<div>loadin......</div>}>
+            <SearchInput />
+          </Suspense>
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarContent justify="end">{authContent}</NavbarContent>
+      <NavbarContent justify="end"><HeaderAuth/></NavbarContent>
     </Navbar>
   );
 }

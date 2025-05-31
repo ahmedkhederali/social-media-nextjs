@@ -1,31 +1,21 @@
-import { Button } from "@nextui-org/react";
-import * as actions from "@/actions";
-import {auth} from "@/auth"
-import Profile from "@/Components/Profile";
+import TopicCreateForm from "@/Components/topics/topic-create-form";
+import { Divider } from "@nextui-org/react";
+import { getTopPostsByTopicSlug } from "@/db/queries/post";
+import PostList from "@/Components/posts/post-list";
+import TopicList from "@/Components/topics/topic-list";
 export default async function Home() {
-  const session = await auth();
   return (
-    <div>
-      <form action={actions.signInWithGitHub}>
-        <Button type="submit">Sign IN</Button>
-      </form>
-      <form action={actions.signOut}>
-        <Button type="submit">Sign Out</Button>
-      </form>
-
-
-      {
-        session?.user ? (
-          <div>
-            <h1>Welcome {JSON.stringify(session.user.name)}</h1>
-            {/* <p>{session.user.email}</p> */}
-          </div>
-        ) : (
-          <h1>Please sign in</h1>
-        )
-      }
-
-      <Profile/>
+    <div className="grid grid-cols-4 gap-4 p-4">
+      <div className="col-span-3">
+        <div className="text-xl m-2">Top Posts</div>
+        <PostList fetchPosts={getTopPostsByTopicSlug}/>
+      </div>
+      <div className="border border-gray-200 col-span-1 py-3 px-2 rounded-lg shadow-md">
+        <TopicCreateForm />
+        <Divider className="my-4" />
+        <div className="text-xl m-2">Topics</div>
+        <TopicList />
+      </div>
     </div>
   );
 }
